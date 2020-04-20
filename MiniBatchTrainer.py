@@ -68,7 +68,7 @@ class MiniBatchTrainer(object):
         else:
             loss_list = losses
         if self.test_loss_history and self.current_epoch:
-            if min(self.test_loss_history) > sum(loss_list):
+            if min(self.test_loss_history) >= sum(loss_list):
                 best = True
         else:
             best = True
