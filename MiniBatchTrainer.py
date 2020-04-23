@@ -74,6 +74,12 @@ class MiniBatchTrainer(object):
             best = True
         if best: model.save(path)
 
+    def save(self,model,path,n_per_point=None):
+        if not n_per_point:
+            model.save(path)
+        elif self.current_epoch % n_per_point == 0:
+            model.save(path.replace(".h5","_"+str(self.current_epoch)+".h5"))
+
     def make_history_plot(self,path,n_per_point=1,loss_name_list=[]):
         n_plot = len(self.train_loss_history[0])
         for i_plot in range(n_plot):
