@@ -1,4 +1,4 @@
-import matplotlib,os
+import matplotlib,os,pickle
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
@@ -60,3 +60,7 @@ class MiniBatchTrainer(object):
         if same_plot:
             plt.savefig(path)
             plt.clf()
+
+    def save_history(self,path):
+        pickle.dump(self.loss_history_dict, open(path,"wb"))
+
