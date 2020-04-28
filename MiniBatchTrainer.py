@@ -45,6 +45,14 @@ class MiniBatchTrainer(object):
         elif self.current_epoch % n_per_point == 0:
             model.save(path.replace(".h5","_"+str(self.current_epoch)+".h5"))
 
+    def save_gan(self,gan,gen,disc,path,n_per_point=None):
+        filename, file_extension = os.path.splitext(path)
+        disc.trainable = False
+        self.save(gan,filename+"_gan"+file_extension,n_per_point=n_per_point)
+        disc.trainable = True
+        self.save(gen,filename+"_gen"+file_extension,n_per_point=n_per_point)
+        self.save(disc,filename+"_disc"+file_extension,n_per_point=n_per_point)
+
     def make_history_plot(self,path,n_per_point=1,same_plot=True):
         plt.figure(1)
         for name,loss_history_list in self.loss_history_dict.items(): 
