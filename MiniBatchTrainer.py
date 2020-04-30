@@ -2,6 +2,8 @@ import matplotlib,os,pickle
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
+import tensorflow as tf
+
 class MiniBatchTrainer(object):
     def __init__(self,max_latent_count=5):
         self.loss_history_dict = {}
@@ -37,13 +39,15 @@ class MiniBatchTrainer(object):
                 best = True
         else:
             best = True
-        if best: model.save(path)
+        if best: tf.keras.models.save_model(model,path)
 
     def save(self,model,path,n_per_point=None):
+        filename, file_extension = os.path.splitext(path)
+        save_format = file_extension.replace(".","")
         if not n_per_point:
-            model.save(path)
+            tf.keras.models.save_model(model,path,save_format=save_format,include_optimizer=True)
         elif self.current_epoch % n_per_point == 0:
-            model.save(path.replace(".h5","_"+str(self.current_epoch)+".h5"))
+            tf.keras.models.save_model(model,path.replace(file_extension,"_"+str(self.current_epoch)+file_extension),save_format=save_format,include_optimizer=True)
 
     def save_gan(self,gan,gen,disc,path,n_per_point=None):
         filename, file_extension = os.path.splitext(path)
