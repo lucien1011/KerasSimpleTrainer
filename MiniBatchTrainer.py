@@ -49,6 +49,16 @@ class MiniBatchTrainer(object):
         elif self.current_epoch % n_per_point == 0:
             tf.keras.models.save_model(model,path.replace(file_extension,"_"+str(self.current_epoch)+file_extension),save_format=save_format,include_optimizer=True)
 
+    def save_optimiser(self,opt,path,n_per_point=None):
+        filename, file_extension = os.path.splitext(path)
+        save_format = file_extension.replace(".","")
+        #weights = opt.get_config()
+        weights = opt.get_weights()
+        if not n_per_point:
+            pickle.dump(weights,open(path,"wb"))
+        elif self.current_epoch % n_per_point == 0:
+            pickle.dump(weights,open(path.replace(file_extension,"_"+str(self.current_epoch)+file_extension),"wb"))
+
     def save_gan(self,gan,gen,disc,path,n_per_point=None):
         filename, file_extension = os.path.splitext(path)
         disc.trainable = False
