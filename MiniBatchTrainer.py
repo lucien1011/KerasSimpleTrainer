@@ -68,6 +68,7 @@ class MiniBatchTrainer(object):
         self.save(disc,filename+"_disc"+file_extension,n_per_point=n_per_point)
 
     def make_history_plot(self,path,n_per_point=1,same_plot=True,log_scale=False):
+        plt.clf()
         plt.figure(1)
         if log_scale: plt.yscale('log')
         for name,loss_history_list in self.loss_history_dict.items(): 
