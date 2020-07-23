@@ -75,6 +75,14 @@ class MiniBatchTrainer(object):
         self.save(gen,filename+"_gen"+file_extension,n_per_point=n_per_point)
         self.save(disc,filename+"_disc"+file_extension,n_per_point=n_per_point)
 
+    def save_grad(self,grad,path,n_per_point=None):
+        filename, file_extension = os.path.splitext(path)
+        save_format = file_extension.replace(".","")
+        if not n_per_point:
+            pickle.dump(grad,open(path,"wb"))
+        elif self.current_epoch % n_per_point == 0:
+            pickle.dump(grad,open(path.replace(file_extension,"_"+str(self.current_epoch)+file_extension),"wb"))
+
     def make_history_plot(self,path,n_per_point=1,same_plot=True,log_scale=False):
         plt.clf()
         plt.figure(1)
