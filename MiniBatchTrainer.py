@@ -83,15 +83,16 @@ class MiniBatchTrainer(object):
         elif self.current_epoch % n_per_point == 0:
             pickle.dump(grad,open(path.replace(file_extension,"_"+str(self.current_epoch)+file_extension),"wb"))
 
-    def make_history_plot(self,path,n_per_point=1,same_plot=True,log_scale=False):
+    def make_history_plot(self,path,n_per_point=1,same_plot=True,log_scale=False,xlabel='Epoch',ylabel='Loss',ylim=None):
         plt.clf()
         plt.figure(1)
         if log_scale: plt.yscale('log')
         for name,loss_history_list in self.loss_history_dict.items(): 
             n_point = len(loss_history_list)
             plt.plot(range(n_point),loss_history_list,label=name,)
-            plt.xlabel('Epoch')
-            plt.ylabel('Loss')
+            plt.xlabel(xlabel)
+            plt.ylabel(ylabel)
+            if ylim: plt.ylim(*ylim)
             plt.legend(loc='best')
             if not same_plot:
                 filename, file_extension = os.path.splitext(path)
