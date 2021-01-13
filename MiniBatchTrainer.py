@@ -49,12 +49,12 @@ class MiniBatchTrainer(object):
         elif self.current_epoch % n_per_point == 0:
             tf.keras.models.save_model(model,path.replace(file_extension,"_"+str(self.current_epoch)+file_extension),save_format=save_format,include_optimizer=True)
     
-    def save_weights(self,model,path,n_per_point=None):
+    def save_weights(self,model,path,save_per_point=None):
         filename, file_extension = os.path.splitext(path)
         save_format = file_extension.replace(".","")
-        if not n_per_point:
+        if not save_per_point:
             model.save_weights(path,save_format=save_format)
-        elif self.current_epoch % n_per_point == 0:
+        elif self.current_epoch % save_per_point == 0:
             model.save_weights(path.replace(file_extension,"_"+str(self.current_epoch)+file_extension),save_format=save_format)
 
     def save_optimiser(self,opt,path,n_per_point=None):
